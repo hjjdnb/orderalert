@@ -1,4 +1,4 @@
-name: 构建安卓APK
+name: 构建安卓64位APK
 
 on:
   workflow_dispatch:
@@ -8,13 +8,17 @@ jobs:
 
     runs-on: ubuntu-22.04
 
+
     steps:
 
-    - name: 拉取代码
+    # 拉取代码
+    - name: 拉取仓库代码
       uses: actions/checkout@v4
 
 
-    - name: 安装依赖
+
+    # 安装系统环境
+    - name: 安装编译环境
       run: |
 
         sudo apt update
@@ -34,35 +38,57 @@ jobs:
         cmake
 
 
-    - name: 安装Python环境
+
+    # Python环境
+    - name: 安装Buildozer
       run: |
 
         python3 -m pip install --upgrade pip
 
-        pip install buildozer
+        pip install buildozer==1.5.0
 
         pip install cython==0.29.37
 
 
-    - name: 检查文件
+
+    # 检查文件
+    - name: 检查项目文件
       run: |
 
         ls -la
 
-        head -10 buildozer.spec
+        echo "=========="
+
+        head -30 buildozer.spec
 
 
-    - name: 编译APK
+
+    # 设置Android环境
+    - name: 配置Android版本
       run: |
+
+        echo "android.ndk = 25b" >> buildozer.spec
+
+        echo "android.ndk_api = 24" >> buildozer.spec
+
+
+
+    # 编译APK
+    - name: 开始编译APK
+      run: |
+
+        yes | buildozer android clean
 
         yes | buildozer -v android debug
 
 
-    - name: 上传APK
+
+    # 上传APK
+    - name: 保存APK文件
       uses: actions/upload-artifact@v4
 
       with:
 
-        name: OrderAlert-APK
+        name: OrderAlert-arm64-v8a
 
         path: bin/*.apk
