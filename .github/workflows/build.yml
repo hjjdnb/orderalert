@@ -3,7 +3,9 @@ name: 构建安卓64位APK
 on:
   workflow_dispatch:
 
+
 jobs:
+
   build:
 
     runs-on: ubuntu-22.04
@@ -11,14 +13,13 @@ jobs:
 
     steps:
 
-    # 拉取代码
-    - name: 拉取仓库代码
-      uses: actions/checkout@v4
+
+    - name: 拉取代码
+      uses: actions/checkout@v5
 
 
 
-    # 安装系统环境
-    - name: 安装编译环境
+    - name: 安装系统环境
       run: |
 
         sudo apt update
@@ -39,11 +40,20 @@ jobs:
 
 
 
-    # Python环境
-    - name: 安装Buildozer
+    - name: 安装 Android SDK NDK
       run: |
 
-        python3 -m pip install --upgrade pip
+        yes | sdkmanager --licenses || true
+
+        sdkmanager "ndk;25.2.9519653"
+
+
+
+
+    - name: 安装Python环境
+      run: |
+
+        pip install --upgrade pip
 
         pip install buildozer==1.5.0
 
@@ -51,44 +61,28 @@ jobs:
 
 
 
-    # 检查文件
-    - name: 检查项目文件
+    - name: 设置NDK路径
       run: |
 
-        ls -la
-
-        echo "=========="
-
-        head -30 buildozer.spec
+        echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
 
 
 
-    # 设置Android环境
-    - name: 配置Android版本
+
+    - name: 编译APK
       run: |
 
-        echo "android.ndk = 25b" >> buildozer.spec
-
-        echo "android.ndk_api = 24" >> buildozer.spec
-
-
-
-    # 编译APK
-    - name: 开始编译APK
-      run: |
-
-        yes | buildozer android clean
+        buildozer android clean
 
         yes | buildozer -v android debug
 
 
 
-    # 上传APK
-    - name: 保存APK文件
-      uses: actions/upload-artifact@v4
+    - name: 上传APK
+      uses: actions/upload-artifact@v5
 
       with:
 
-        name: OrderAlert-arm64-v8a
+        name: OrderAlert-arm64-apk
 
         path: bin/*.apk
