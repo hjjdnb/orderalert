@@ -1,97 +1,118 @@
 [app]
 
-# (str) Title of the application
+# 应用名称
 title = 抢单软件告警
 
-# (str) Package name
+
+# 包名（只能英文）
 package.name = orderalert
 
-# (str) Package domain (needed for android/ios packaging)
-package.domain = org.orderalert
 
-# (str) Source code where the main.py live
+# 包域名
+package.domain = com.orderalert
+
+
+# 源代码目录
 source.dir = .
 
-# (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,json,ttf,otf
 
-# (list) List of inclusions (glob pattern)
-source.include_dirs =
+# 主程序
+source.main = main.py
 
-# (list) List of exclusions
-source.exclude_dirs = tests, bin, .git, build, dist, __pycache__, chrome_data, EasyFlow*.exe_extracted
 
-# (list) Source files to exclude (glob pattern)
-source.exclude_patterns = test_*.py, remove_*.py, fix_*.py, *_debug.py
+# 包含文件
+source.include_exts = py,png,jpg,kv,json,txt
 
-# (str) Application versioning (method 1)
-version = 2.0.0
 
-# (list) Application requirements
-requirements = python3,kivy,pyjnius,websocket-client,requests
+# 版本
+version = 1.0
 
-# (str) Supported orientation (one of 'portrait', 'landscape' or 'sensor' for automatic)
+
+# Python依赖
+requirements = python3,kivy,pyjnius,websocket-client,requests,certifi,openssl
+
+
+# Kivy入口
 orientation = portrait
 
-# (bool) Indicate if the application should be fullscreen or not
+
+# 是否全屏
 fullscreen = 0
 
-#
-# Android specific directives
-#
 
-# (int) Target Android API, should be as high as possible.
+
+# -----------------------
+# Android设置
+# -----------------------
+
+
+# Android API
 android.api = 33
 
-# (int) Minimum API your APK will support.
+
+# 最低安卓版本
 android.minapi = 24
 
-# (str) Android NDK version to use
-# 完全注释掉 android.ndk，由 Buildozer 自动下载默认兼容的 NDK 版本，防止 404 下载报错
-# android.ndk = 25b
 
-# (str) Android entry point, default is ok for Kivy-based app
-android.entrypoint = org.kivy.android.PythonActivity
-
-# (list) Permission the application needs
-android.permissions = INTERNET, VIBRATE, WAKE_LOCK, FOREGROUND_SERVICE, POST_NOTIFICATIONS, ACCESS_NETWORK_STATE, REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-
-# (list) The Android archs to build for
+# 64位
 android.archs = arm64-v8a
 
-# (bool) enables Android auto backup feature (Android API >=23)
-android.allow_backup = True
 
-# (str) The format used to package the app for release mode (aab or apk or aar).
-android.release_artifact = apk
+# NDK版本
+android.ndk = 25b
 
-# (str) The format used to package the app for debug mode (apk or aar).
-android.debug_artifact = apk
 
-#
-# Python for android (p4a) specific
-#
+# NDK API
+android.ndk_api = 24
 
-# (str) python-for-android branch to use, defaults to master
-# 注释掉 stable 分支，自动选用默认 master 分支
-# p4a.branch = stable
 
-# (str) Bootstrap to use for python-for-android
+# 使用SDL2
 p4a.bootstrap = sdl2
 
-# (int) Number of parallel jobs to build with
-p4a.njobs = 2
 
-# (bool) Skip running-as-root warning
-warn_on_root = 0
 
-#
-# iOS specific directives
-#
-ios.bundle_name = orderalert
-ios.version = 2.0.0
+# -----------------------
+# 权限
+# -----------------------
 
-#
-# Commands
-#
-default_build_type = debug
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,FOREGROUND_SERVICE,POST_NOTIFICATIONS
+
+
+
+# -----------------------
+# 日志
+# -----------------------
+
+log_level = 2
+
+
+
+# -----------------------
+# Android启动模式
+# -----------------------
+
+android.entrypoint = org.kivy.android.PythonActivity
+
+
+
+# -----------------------
+# 构建优化
+# -----------------------
+
+android.accept_sdk_license = True
+
+
+android.enable_androidx = True
+
+
+
+# -----------------------
+# 打包设置
+# -----------------------
+
+# 不打包无用架构
+android.release_artifact = apk
+
+
+# 保留Python代码
+android.add_src = .
