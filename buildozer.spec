@@ -47,8 +47,8 @@ android.api = 33
 android.minapi = 24
 
 # (str) Android NDK version to use
-# 使用 25b 替代旧版 r19c，避免下载 404 错误
-android.ndk = 25b
+# 完全注释掉 android.ndk，由 Buildozer 自动下载默认兼容的 NDK 版本，防止 404 下载报错
+# android.ndk = 25b
 
 # (str) Android entry point, default is ok for Kivy-based app
 android.entrypoint = org.kivy.android.PythonActivity
@@ -73,8 +73,8 @@ android.debug_artifact = apk
 #
 
 # (str) python-for-android branch to use, defaults to master
-# 使用 master 分支以获取最新下载地址，解决 404 报错
-p4a.branch = master
+# 注释掉 stable 分支，自动选用默认 master 分支
+# p4a.branch = stable
 
 # (str) Bootstrap to use for python-for-android
 p4a.bootstrap = sdl2
