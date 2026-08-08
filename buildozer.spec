@@ -20,52 +20,56 @@ source.dir = .
 source.main = main.py
 
 
-# 包含文件类型
+# 包含文件
 source.include_exts = py,png,jpg,jpeg,kv,json,txt
 
 
-# 版本号
+
+# 版本
 version = 1.0
 
 
 
 # Python依赖
-# 根据你的main.py实际导入修改
 requirements = python3,kivy,requests,websocket-client,certifi,pyjnius
+
 
 
 # 屏幕方向
 orientation = portrait
 
 
-# 不全屏
+# 非全屏
 fullscreen = 0
 
 
 
+
 # =====================
-# Android配置
+# Android设置
 # =====================
 
 
-# Android SDK版本
+# Android API
 android.api = 33
 
 
-# 最低支持Android版本
+# 最低版本
 android.minapi = 24
 
 
-# 只生成64位APK
+# 只生成64位
 android.archs = arm64-v8a
+
 
 
 # 使用SDL2
 p4a.bootstrap = sdl2
 
 
-# 使用最新p4a
-p4a.branch = develop
+
+# 使用新版 python-for-android
+p4a.branch = master
 
 
 
@@ -73,8 +77,10 @@ p4a.branch = develop
 android.enable_androidx = True
 
 
-# 接受SDK协议
+
+# 自动接受SDK协议
 android.accept_sdk_license = True
+
 
 
 
@@ -87,17 +93,19 @@ android.permissions = INTERNET,ACCESS_NETWORK_STATE,FOREGROUND_SERVICE,POST_NOTI
 
 
 
+
 # =====================
-# 编译设置
+# 编译参数
 # =====================
 
 
-# 日志等级
 log_level = 2
 
 
-# 使用APK输出
+
+# 输出APK
 android.release_artifact = apk
+
 
 
 
@@ -106,9 +114,4 @@ android.release_artifact = apk
 # =====================
 
 
-# 保留符号
-android.add_src = .
-
-
-# 不压缩Python文件
 android.no-byte-compile-python = True
