@@ -13,47 +13,52 @@ jobs:
 
     steps:
 
-
-    - name: 拉取代码
+    - name: Checkout
       uses: actions/checkout@v5
 
 
-
-    - name: 安装系统环境
+    - name: 安装依赖
       run: |
 
         sudo apt update
 
         sudo apt install -y \
-        python3-pip \
-        git \
-        zip \
-        unzip \
-        openjdk-17-jdk \
-        autoconf \
-        libtool \
-        pkg-config \
-        zlib1g-dev \
-        libncurses5-dev \
-        libncursesw5-dev \
-        cmake
+          python3-pip \
+          git \
+          zip \
+          unzip \
+          openjdk-17-jdk \
+          autoconf \
+          libtool \
+          pkg-config \
+          zlib1g-dev \
+          libncurses5-dev \
+          libncursesw5-dev \
+          cmake
 
 
 
-    - name: 安装 Android SDK NDK
+    - name: 安装Android工具
       run: |
 
         yes | sdkmanager --licenses || true
+
+        sdkmanager "platform-tools"
+
+        sdkmanager "platforms;android-33"
+
+        sdkmanager "build-tools;33.0.2"
 
         sdkmanager "ndk;25.2.9519653"
 
 
 
-
-    - name: 安装Python环境
+    - name: 安装Buildozer
       run: |
 
-        pip install --upgrade pip
+        python3 -m pip install --upgrade pip
+
+        pip uninstall -y buildozer
 
         pip install buildozer==1.5.0
 
@@ -61,20 +66,21 @@ jobs:
 
 
 
-    - name: 设置NDK路径
+    - name: 设置环境
       run: |
 
         echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
 
+        echo "ANDROIDNDK=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
 
 
 
-    - name: 编译APK
+    - name: 编译
       run: |
 
-        buildozer android clean
+        export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653
 
-        yes | buildozer -v android debug
+        buildozer -v android debug
 
 
 
@@ -83,6 +89,6 @@ jobs:
 
       with:
 
-        name: OrderAlert-arm64-apk
+        name: apk-arm64
 
         path: bin/*.apk
